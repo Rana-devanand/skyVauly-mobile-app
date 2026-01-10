@@ -1,13 +1,13 @@
 import SafeAreaWrapper from "@/src/components/common/SafeAreaWrapper";
-import HomeScreen from "@/src/screens/HomeScreen";
+import Setting from "@/src/screens/Setting";
 import React from "react";
 
-const HomeScreenPage = () => {
+const SettingPage = () => {
   return (
     <SafeAreaWrapper>
-      <HomeScreen />
+      <Setting />
     </SafeAreaWrapper>
   );
 };
 
-export default HomeScreenPage;
+export default SettingPage;

@@ -11,7 +11,7 @@ export const api = createApi({
       providesTags: ["ME"],
     }),
     login: builder.mutation<
-      ApiResponse<{ accessToken: string; refreshToken: string }>,
+      ApiResponse<{ accessToken: string; refreshToken: string; user: User }>,
       { email: string; password: string }
     >({
       query: (body) => {
@@ -20,8 +20,8 @@ export const api = createApi({
     }),
     register: builder.mutation<
       ApiResponse<User>,
-      Omit<User, "_id" | "active" | "role" | "provider"> & {
-        confirmPassword: string;
+      Omit<User, "_id" | "active" | "provider" | "role" | "blocked" | "blockReason" | "createdAt" | "facebookId" | "linkedinId" | "image"> & {
+        password: string;
       }
     >({
       query: (body) => {
@@ -49,7 +49,7 @@ export const api = createApi({
       },
     }),
     loginByApple: builder.mutation<
-      ApiResponse<{ accessToken: string; refreshToken: string }>,
+      ApiResponse<{ accessToken: string; refreshToken: string; user: User }>,
       { id_token: string }
     >({
       query: (body) => {
@@ -57,7 +57,7 @@ export const api = createApi({
       },
     }),
     loginByGoogle: builder.mutation<
-      ApiResponse<{ accessToken: string; refreshToken: string }>,
+      ApiResponse<{ accessToken: string; refreshToken: string; user: User }>,
       { access_token: string }
     >({
       query: (body) => {
@@ -65,7 +65,7 @@ export const api = createApi({
       },
     }),
     loginByLinkedIn: builder.mutation<
-      ApiResponse<{ accessToken: string; refreshToken: string }>,
+      ApiResponse<{ accessToken: string; refreshToken: string; user: User }>,
       { access_token: string }
     >({
       query: (body) => {
@@ -73,7 +73,7 @@ export const api = createApi({
       },
     }),
     loginByFacebook: builder.mutation<
-      ApiResponse<{ accessToken: string; refreshToken: string }>,
+      ApiResponse<{ accessToken: string; refreshToken: string; user: User }>,
       { access_token: string }
     >({
       query: (body) => {

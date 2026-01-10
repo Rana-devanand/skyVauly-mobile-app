@@ -1,10 +1,8 @@
-import Signup from '@/components/auth/Signup'
-import React from 'react'
+import Signup from "@/src/components/auth/Signup";
+import React from "react";
 
 const createAccount = () => {
-  return (
-    <Signup/>
-  )
-}
+  return <Signup />;
+};
 
-export default createAccount
+export default createAccount;

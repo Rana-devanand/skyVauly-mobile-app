@@ -1,14 +1,12 @@
-import { useFonts } from "expo-font";
+import RootNavigation from "@/src/navigation/RootNavigation";
+import { store } from "@/src/store/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import FlashMessage from "react-native-flash-message";
 import "react-native-reanimated";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import Toast from "react-native-toast-message";
 import { Provider } from "react-redux";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import Toast from 'react-native-toast-message';
-import RootNavigation from "@/navigation/RootNavigation";
-import { store } from "@/src/store/store";
-import SplashScreen from "@/src/screens/Splash";
 
 export default function RootLayout() {
   // const [loaded] = useFonts();
@@ -22,17 +20,16 @@ export default function RootLayout() {
     const keys = await AsyncStorage.getAllKeys();
     const items = await AsyncStorage.multiGet(keys);
     console.log("AsyncStorage Values:", items);
-    AsyncStorage.clear();
+    // AsyncStorage.clear();
   };
   showStorage();
-
 
   return (
     <SafeAreaProvider>
       <Provider store={store}>
         <StatusBar style="auto" />
-          <RootNavigation />
-          <Toast />
+        <RootNavigation />
+        <Toast />
       </Provider>
       <FlashMessage position="top" />
     </SafeAreaProvider>
