@@ -7,8 +7,7 @@ import {
 import { resetTokens, setTokens } from "../store/action/authActions";
 import { RootState } from "../store/store";
 
-const BE_API_URL = process.env.EXPO_PUBLIC_API_URL_LOCAL
-console.log({BE_API_URL})
+const BE_API_URL = process.env.EXPO_PUBLIC_API_URL_LOCAL ?? ""
 const baseQuery = fetchBaseQuery({
 
 
