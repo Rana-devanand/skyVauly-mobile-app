@@ -67,8 +67,6 @@ export default function Login() {
     }
   };
 
-  const BE_API_URL = process.env.EXPO_PUBLIC_API_URL_LOCAL;
-  console.log({ BE_API_URL });
   console.log("Form state:", { isValid, isSubmitting, errors });
   return (
     <AuthWrapper>
