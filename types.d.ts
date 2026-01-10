@@ -9,7 +9,9 @@ type ProviderType = "google" | "manual" | "facebook" | "apple" | "linkedin";
 
 interface User {
   _id: string;
+  uid?: string;
   name: string;
+  username: string;
   email: string;
   active?: boolean;
   role: "USER" | "ADMIN";
@@ -19,7 +21,7 @@ interface User {
   facebookId?: string;
   image?: string;
   linkedinId?: string;
-  createdAt: string;
+  created_at?: string;
 }
 
 interface ApiResponse<T> {

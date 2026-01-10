@@ -1,10 +1,8 @@
-import React from 'react'
-import Login from '@/components/auth/Login'
+import Login from "@/src/components/auth/Login";
+import React from "react";
 
 const login = () => {
-  return (
-   <Login/>
-  )
-}
+  return <Login />;
+};
 
-export default login
+export default login;

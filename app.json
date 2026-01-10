@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/splash.jpeg"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.SkyVault"
     },
     "web": {
       "output": "static",

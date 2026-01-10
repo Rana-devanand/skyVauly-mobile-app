@@ -8,6 +8,7 @@ interface AuthState {
   refreshToken: string;
   isAuthenticated: boolean;
   loading: boolean;
+  user: User;
 }
 
 // Define the initial state using that typ
@@ -16,6 +17,7 @@ const initialState: AuthState = {
   refreshToken: "",
   isAuthenticated: Boolean(AsyncStorage.getItem("access_token")),
   loading: true,
+  user: {} as User,
 };
 
 const _setTokens = (
@@ -28,6 +30,12 @@ const _setTokens = (
   state.refreshToken = data.refreshToken;
   state.isAuthenticated = true;
   state.loading = false;
+  return state;
+};
+
+const _setUser = (state: AuthState, user: User) => {
+  AsyncStorage.setItem("user", JSON.stringify(user));
+  state.user = user;
   return state;
 };
 
@@ -53,6 +61,9 @@ export const authSlice = createSlice({
       action: PayloadAction<{ accessToken: string; refreshToken: string }>
     ) => {
       return _setTokens(state, action.payload);
+    },
+    setUser: (state, action: PayloadAction<User>) => {
+      return _setUser(state, action.payload);
     },
     resetTokens: (state) => {
       return _resetTokens(state);
@@ -82,7 +93,10 @@ export const authSlice = createSlice({
           api.endpoints.loginByLinkedIn.matchFulfilled
         ),
         (state, action) => {
-          return _setTokens(state, action.payload.data);
+          return (
+            _setTokens(state, action.payload.data),
+            _setUser(state, action.payload.data.user)
+          );
         }
       )
       .addMatcher(

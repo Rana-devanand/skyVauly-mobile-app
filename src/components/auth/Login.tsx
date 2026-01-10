@@ -1,10 +1,12 @@
 // import { yupResolver } from "@hookform/resolvers/yup";
+import { useLoginMutation } from "@/src/services/api";
 import { AntDesign } from "@expo/vector-icons";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
 import {
+  ActivityIndicator,
   Image,
   Platform,
   StyleSheet,
@@ -12,10 +14,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import Toast from "react-native-toast-message";
+import { showMessage } from "react-native-flash-message";
+import { Divider } from "react-native-paper";
 import * as yup from "yup";
 import CustomInput from "../common/CustomInput";
 import AuthWrapper from "./AuthWrapper";
+import { store } from "@/src/store/store";
 // Import your custom password field or implement below
 // import AppleLogin from './AppleLogin';
 // import GoogleLogin from './GoogleLogin';
@@ -35,7 +39,7 @@ type FormData = yup.InferType<typeof schema>;
 
 export default function Login() {
   const router = useRouter();
-  // const [loginUser, { isLoading }] = useLoginMutation();
+  const [loginUser, { isLoading }] = useLoginMutation();
   const {
     control,
     handleSubmit,
@@ -44,36 +48,35 @@ export default function Login() {
   } = useForm<FormData>({
     defaultValues: { email: "", password: "" },
     resolver: yupResolver(schema),
+    mode: "onTouched",
   });
 
-  // const onSubmit = async (data: FormData) => {
-  //   try {
-  //     // await loginUser(data).unwrap()
-  //     router.replace("/(authenticated)/(tabs)");
-  //     showMessage({
-  //       message: "Login successful",
-  //       type: "success",
-  //     });
-  //   } catch (error: any) {
-  //     console.log("Login error:", error);
-  //     showMessage({
-  //       message: error?.data?.message || "Login failed",
-  //       type: "danger",
-  //     });
-  //   }
-  // };
-  const onSubmit = () => {
-    router.replace("/(authenticated)/(tabs)");
-    Toast.show({
-      type: "success",
-      text1: "Login successful",
-    });
-  }
+  const onSubmit = async (data: FormData) => {
+    try {
+      await loginUser(data).unwrap();
+      router.replace("/(authenticated)/(tabs)");
+      showMessage({
+        message: "Login successful",
+        type: "success",
+      });
+    } catch (error: any) {
+      showMessage({
+        message: error?.data?.message || "Login failed",
+        type: "danger",
+      });
+    }
+  };
+
+  const BE_API_URL = process.env.EXPO_PUBLIC_API_URL_LOCAL;
+  console.log({ BE_API_URL });
+  console.log("Form state:", { isValid, isSubmitting, errors });
   return (
-   <AuthWrapper>
-         <View style={styles.container}>
+    <AuthWrapper>
+      <View style={styles.container}>
         <Text style={styles.welcomeText}>Welcome Back!</Text>
-        <Text style={styles.subtitle}>Login and start manage your documents</Text>
+        <Text style={styles.subtitle}>
+          Login and start manage your documents
+        </Text>
         <CustomInput
           label={"Email Address/ Username"}
           name="email"
@@ -105,27 +108,34 @@ export default function Login() {
             // });
           }}
         >
-          <Text style={{ color: "blue" }}>
-            Forgot password
-          </Text>
+          <Text style={{ color: "blue" }}>Forgot password</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={onSubmit}
-          style={styles.button}
-          disabled={!isValid || isSubmitting }
+          onPress={handleSubmit(onSubmit)}
+          style={[styles.button, isLoading && styles.buttonDisabled]}
+          disabled={isLoading}
         >
-          <Text style={styles.logIn}>Log in</Text>
+          {isLoading ? (
+            <View style={styles.buttonContent}>
+              <ActivityIndicator color="#fff" size="small" />
+              <Text style={[styles.logIn, { marginLeft: 8 }]}>
+                Logging in...
+              </Text>
+            </View>
+          ) : (
+            <Text style={styles.logIn}>Log in</Text>
+          )}
         </TouchableOpacity>
 
         <View style={styles.dividerContainer}>
-          {/* <Divider
+          <Divider
             style={{
               flex: 1,
               height: 1,
             }}
-          /> */}
+          />
           <Text style={styles.loginWith}>Or login with</Text>
-          {/* <Divider style={{ flex: 1, height: 1 }} /> */}
+          <Divider style={{ flex: 1, height: 1 }} />
         </View>
 
         <View style={styles.socialContainer}>
@@ -137,11 +147,7 @@ export default function Login() {
             <Text style={styles.socialButtonText}>Google</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.socialButton}>
-            <AntDesign
-              name="apple"
-              size={20}
-              color="#000"
-            />
+            <AntDesign name="apple" size={20} color="#000" />
             <Text style={styles.socialButtonText}>Apple</Text>
           </TouchableOpacity>
         </View>
@@ -157,7 +163,7 @@ export default function Login() {
           </TouchableOpacity>
         </View>
       </View>
-   </AuthWrapper>
+    </AuthWrapper>
   );
 }
 const styles = StyleSheet.create({
@@ -168,7 +174,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     marginTop: Platform.OS === "android" ? 130 : 0,
   },
-  welcomeText:{
+  welcomeText: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 8,
@@ -199,6 +205,15 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     borderRadius: 12,
     alignItems: "center",
+  },
+  buttonDisabled: {
+    backgroundColor: "#6B7280",
+    opacity: 0.7,
+  },
+  buttonContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   logIn: {
     color: "#fff",

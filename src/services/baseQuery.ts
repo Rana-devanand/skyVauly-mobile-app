@@ -1,14 +1,18 @@
 import {
-    BaseQueryFn,
-    FetchArgs,
-    fetchBaseQuery,
-    FetchBaseQueryError,
+  BaseQueryFn,
+  FetchArgs,
+  fetchBaseQuery,
+  FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store/store";
 import { resetTokens, setTokens } from "../store/action/authActions";
+import { RootState } from "../store/store";
 
+const BE_API_URL = process.env.EXPO_PUBLIC_API_URL_LOCAL
+console.log({BE_API_URL})
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://e407341506f3.ngrok-free.app/api",
+
+
+  baseUrl: `${BE_API_URL}/api`,
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.accessToken;
 
