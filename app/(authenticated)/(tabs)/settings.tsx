@@ -1,5 +1,5 @@
-import SafeAreaWrapper from "@/src/components/common/SafeAreaWrapper";
-import Setting from "@/src/screens/Setting";
+import SafeAreaWrapper from "@src/components/common/SafeAreaWrapper";
+import Setting from "@src/screens/Setting";
 import React from "react";
 
 const SettingPage = () => {

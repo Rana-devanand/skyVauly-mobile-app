@@ -1,8 +1,8 @@
-import { useRegisterMutation } from "@/src/services/api";
-import PasswordRequirement from "@/src/utils/PasswordRequirement";
-import { createAccount } from "@/src/utils/yup";
 import { AntDesign } from "@expo/vector-icons";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRegisterMutation } from "@src/services/api";
+import PasswordRequirement from "@src/utils/PasswordRequirement";
+import { createAccount } from "@src/utils/yup";
 import { useRouter } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -76,7 +76,7 @@ export default function Signup() {
           <TouchableOpacity style={styles.socialButton}>
             <Image
               style={styles.google}
-              source={require("@/assets/google.png")}
+              source={require("@assets/google.png")}
             />
             <Text style={styles.socialButtonText}>Google</Text>
           </TouchableOpacity>

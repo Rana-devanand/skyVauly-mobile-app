@@ -1,6 +1,6 @@
-import { resetTokens, setTokens } from "@/src/store/action/authActions";
-import { useAppDispatch, useAppSelector } from "@/src/store/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { resetTokens, setTokens } from "@src/store/action/authActions";
+import { useAppDispatch, useAppSelector } from "@src/store/store";
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";

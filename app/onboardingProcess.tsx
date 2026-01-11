@@ -1,6 +1,6 @@
-import { styles } from "@/src/components/onBoard/style";
-import { useOrientation } from "@/src/utils/useOrientation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { styles } from "@src/components/onBoard/style";
+import { useOrientation } from "@src/utils/useOrientation";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -10,7 +10,7 @@ const steps = [
     title: "Welcome to SkyVault",
     subtitle:
       "A secure way to catalog, protect, and celebrate the things you value most.",
-    image: require("@/assets/onboarding/onboard1.png"),
+    image: require("@assets/onboarding/onboard1.png"),
     background:
       "linear-gradient(90deg,rgba(226, 228, 255, 1) 1%, rgba(210, 216, 255, 1) 51%, rgba(226, 228, 255, 1) 100%)",
   },
@@ -18,7 +18,7 @@ const steps = [
     title: "Build Your Digital Household",
     subtitle:
       "Create your household, add members, and keep every important item organized in one place",
-    image: require("@/assets/onboarding/onboard2.png"),
+    image: require("@assets/onboarding/onboard2.png"),
     background:
       "linear-gradient(90deg,rgba(219, 241, 255, 1) 1%, rgba(185, 217, 255, 1) 51%, rgba(219, 241, 255, 1) 100%);",
   },
@@ -26,7 +26,7 @@ const steps = [
     title: "See Your Progress Grow",
     subtitle:
       "Earn badges as you complete rooms and build your full household inventory.",
-    image: require("@/assets/onboarding/onboard3.png"),
+    image: require("@assets/onboarding/onboard3.png"),
     background:
       "linear-gradient(90deg,rgba(255, 235, 239, 1) 1%, rgba(237, 230, 241, 1) 51%, rgba(255, 235, 239, 1) 100%);",
   },
@@ -49,7 +49,7 @@ const OnBoarding = () => {
 
   return (
     <View
-      // source={require("@/assets/images/partial-react-logo.png")}
+      // source={require("@assets/images/partial-react-logo.png")}
       style={[styles.background, { backgroundColor: steps[index].background }]}
     >
       <View style={isLandscape ? styles.landscapeContainer : styles.container}>

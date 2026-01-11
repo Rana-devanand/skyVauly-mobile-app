@@ -1,10 +1,8 @@
-import React from 'react'
-import OnBoarding from '@/src/components/onBoard/OnBoarding'
+import OnBoarding from "@src/components/onBoard/OnBoarding";
+import React from "react";
 
 const OnBoardingProcess = () => {
-  return (
-   <OnBoarding/>
-  )
-}
+  return <OnBoarding />;
+};
 
-export default OnBoardingProcess
+export default OnBoardingProcess;

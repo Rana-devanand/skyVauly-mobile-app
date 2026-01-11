@@ -1,6 +1,6 @@
-import RootNavigation from "@/src/navigation/RootNavigation";
-import { store } from "@/src/store/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import RootNavigation from "@src/navigation/RootNavigation";
+import { store } from "@src/store/store";
 import { StatusBar } from "expo-status-bar";
 import FlashMessage from "react-native-flash-message";
 import "react-native-reanimated";

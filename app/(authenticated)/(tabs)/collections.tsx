@@ -1,4 +1,4 @@
-import Collections from "@/src/screens/Collections";
+import Collections from "@src/screens/Collections";
 import React from "react";
 
 const CollectionPage = () => {

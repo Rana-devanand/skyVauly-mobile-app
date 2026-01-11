@@ -1,7 +1,7 @@
 // import { yupResolver } from "@hookform/resolvers/yup";
-import { useLoginMutation } from "@/src/services/api";
 import { AntDesign } from "@expo/vector-icons";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useLoginMutation } from "@src/services/api";
 import { useRouter } from "expo-router";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -19,7 +19,6 @@ import { Divider } from "react-native-paper";
 import * as yup from "yup";
 import CustomInput from "../common/CustomInput";
 import AuthWrapper from "./AuthWrapper";
-import { store } from "@/src/store/store";
 // Import your custom password field or implement below
 // import AppleLogin from './AppleLogin';
 // import GoogleLogin from './GoogleLogin';
@@ -140,7 +139,7 @@ export default function Login() {
           <TouchableOpacity style={styles.socialButton}>
             <Image
               style={styles.google}
-              source={require("@/assets/google.png")}
+              source={require("@assets/google.png")}
             />
             <Text style={styles.socialButtonText}>Google</Text>
           </TouchableOpacity>

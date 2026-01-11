@@ -1,8 +1,8 @@
-import EditProfile from "@/src/components/User/EditUser";
+import EditProfile from "@src/components/User/EditUser";
 import React from "react";
 
 const editProfile = () => {
-  return <EditProfile/>;
+  return <EditProfile />;
 };
 
 export default editProfile;

@@ -1,7 +1,7 @@
-import { api } from "@/src/services/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice, isAnyOf } from "@reduxjs/toolkit";
+import { api } from "@src/services/api";
 // Define a type for the slice state
 interface AuthState {
   accessToken: string;

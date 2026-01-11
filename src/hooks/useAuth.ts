@@ -1,1 +1,2 @@
-export { useAuth } from '@/src/navigation/RootNavigation';
+export { useAuth } from '@src/navigation/RootNavigation';
+

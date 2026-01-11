@@ -1,5 +1,5 @@
-import { RootState } from "@/src/store/store";
 import { Feather } from "@expo/vector-icons";
+import { RootState } from "@src/store/store";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { useState } from "react";
@@ -86,7 +86,9 @@ export default function EditProfile() {
       <Text style={styles.value}>{user.uid}</Text>
 
       <Text style={styles.label}>Member since</Text>
-      <Text style={styles.value}>{new Date(user?.created_at || "").toDateString()}</Text>
+      <Text style={styles.value}>
+        {new Date(user?.created_at || "").toDateString()}
+      </Text>
 
       {/* Save */}
       <TouchableOpacity style={styles.saveBtn} onPress={onSave}>

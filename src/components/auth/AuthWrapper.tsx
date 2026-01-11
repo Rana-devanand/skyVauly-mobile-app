@@ -1,14 +1,14 @@
 import { Image } from "expo-image";
 import React from "react";
 import {
-    ImageBackground,
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 
 interface AuthWrapperProps {
@@ -20,7 +20,7 @@ interface AuthWrapperProps {
 const AuthWrapper = ({ children, title, subtitle }: AuthWrapperProps) => {
   return (
     <ImageBackground
-      source={require("@/assets/base/commonBg.png")}
+      source={require("@assets/base/commonBg.png")}
       style={styles.background}
     >
       <KeyboardAvoidingView
@@ -35,7 +35,7 @@ const AuthWrapper = ({ children, title, subtitle }: AuthWrapperProps) => {
             <View style={styles.container}>
               <View style={styles.headerBackground}>
                 <Image
-                  source={require("@/assets/images/icon.png")}
+                  source={require("@assets/images/icon.png")}
                   style={styles.headerImage}
                   resizeMode="contain"
                 />
