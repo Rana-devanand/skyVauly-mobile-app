@@ -1,4 +1,4 @@
-import { Feather } from "@node_modules/@expo/vector-icons/build/Icons";
+import { Feather } from "@expo/vector-icons/build/Icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import ConfirmModal from "@src/components/common/ConfirmModal";
 import Separator from "@src/components/common/Separator";

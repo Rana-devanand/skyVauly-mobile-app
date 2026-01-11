@@ -1,4 +1,4 @@
-import { AntDesign, Feather } from "@node_modules/@expo/vector-icons/build/Icons";
+import { AntDesign, Feather } from "@expo/vector-icons/build/Icons";
 import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 

@@ -1,5 +1,5 @@
 import { Feather } from "@expo/vector-icons";
-import Toast from "@node_modules/react-native-toast-message/lib";
+import Toast from "react-native-toast-message/lib";
 import { useUploadFileMutation } from "@src/services/uploadFile";
 import * as ImagePicker from "expo-image-picker";
 import React, { useState } from "react";
