@@ -1,4 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createApi } from "@reduxjs/toolkit/query/react";
+import { setUser } from "@src/store/reducers/authReducer";
 import { baseQueryWithReauth } from "./baseQuery";
 
 export const api = createApi({
@@ -8,6 +10,22 @@ export const api = createApi({
   endpoints: (builder) => ({
     me: builder.query<ApiResponse<User>, void>({
       query: () => `/users/me`,
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        try {
+          const { data } = await queryFulfilled;
+          console.log("ME QUERY SUCCESS:", JSON.stringify(data, null, 2));
+          if (data?.data) {
+            dispatch(setUser(data.data));
+            if (data.data.id) {
+               await AsyncStorage.setItem("userId", String(data.data.id));
+            }
+          } else {
+             console.warn("User data missing in ME response");
+          }
+        } catch (e) {
+          console.error("ME QUERY FAILED", e);
+        }
+      },
       providesTags: ["ME"],
     }),
     login: builder.mutation<
@@ -20,7 +38,7 @@ export const api = createApi({
     }),
     register: builder.mutation<
       ApiResponse<User>,
-      Omit<User, "_id" | "active" | "provider" | "role" | "blocked" | "blockReason" | "createdAt" | "facebookId" | "linkedinId" | "image"> & {
+      Omit<User, "_id" | "active" | "provider" | "blocked" | "blockReason" | "createdAt" | "facebookId" | "linkedinId" | "image"> & {
         password: string;
       }
     >({
@@ -78,6 +96,11 @@ export const api = createApi({
     >({
       query: (body) => {
         return { url: `/users/social/facebook`, method: "POST", body };
+      },
+    }),
+    getById : builder.query<ApiResponse<{user : User}>, string>({
+      query: (id) => {
+        return { url: `/users/${id}`, method: "GET" };
       },
     }),
     changePassword: builder.mutation<
@@ -139,6 +162,7 @@ export const {
   useLoginByFacebookMutation,
   useLoginByGoogleMutation,
   useLoginByLinkedInMutation,
+  useGetByIdQuery,
   useChangePasswordMutation,
   useForgotPasswordMutation,
   useResetPasswordMutation,

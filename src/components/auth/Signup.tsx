@@ -35,6 +35,7 @@ export default function Signup() {
     defaultValues: {
       name: "",
       username: "",
+      role : "USER",
       email: "",
       password: "",
     },
@@ -50,6 +51,7 @@ export default function Signup() {
         name: data.name,
         username: data.username,
         email: data.email,
+        role: "USER",
         password: data.password,
       }).unwrap();
       showMessage({

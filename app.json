@@ -31,7 +31,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          // "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -51,6 +51,7 @@
       "eas": {
         "projectId": "4b25435b-8bc1-43e9-a416-2caef68c0f5e"
       }
-    }
+    },
+    "owner": "devanandrana12"
   }
 }

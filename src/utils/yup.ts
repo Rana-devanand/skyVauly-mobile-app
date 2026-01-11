@@ -8,6 +8,7 @@ export const createAccount = yup.object({
        .string()
        .required("Username is required")
        .min(3, "Username must be at least 3 characters"),
+     role: yup.string().required("Role is required"),
      email: yup.string().email("Invalid email").required("Email is required"),
      password: yup
        .string()

@@ -9,7 +9,6 @@ const AUTH_ROUTES = [
   "login",
   "signup",
   "createAccount",
-  "forgot-password",
   "onboardingProcess",
 ];
 
@@ -96,7 +95,7 @@ const RootNavigation = () => {
         options={{ headerShown: false, headerTitle: "Create Account" }}
       />
       <Stack.Screen name="signup" options={{ headerShown: false }} />
-      <Stack.Screen name="forgot-password" options={{ headerShown: false }} />
+      {/* <Stack.Screen name="forgot-password" options={{ headerShown: false }} /> */}
       <Stack.Screen name="onboardingProcess" options={{ headerShown: false }} />
     </Stack>
   );

@@ -1,50 +1,125 @@
-# Welcome to your Expo app 👋
+# 🚀 Expo + EAS Production Build Guide
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This project uses **Expo Router** and supports **Android production builds using EAS**.
 
-## Get started
+---
 
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## 📦 Install Dependencies
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## ▶️ Run in Development
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx expo start -c
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 🛠️ Fix: babel-plugin-module-resolver error
 
-Join our community of developers creating universal apps.
+Install missing plugin:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```bash
+npm install --save-dev babel-plugin-module-resolver
+```
+
+---
+
+## 🧩 Create `babel.config.js` (Root folder)
+
+```js
+module.exports = function (api) {
+  api.cache(true);
+  return {
+    presets: ["babel-preset-expo"],
+    plugins: [
+      [
+        "babel-plugin-module-resolver",
+        {
+          root: ["./"],
+          alias: {
+            "@": "./app",
+            "@assets": "./assets",
+            "@src": "./src",
+          },
+          extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
+        },
+      ],
+    ],
+  };
+};
+```
+
+---
+
+## ⚙️ Setup EAS
+
+```bash
+npm install -g eas-cli
+npx expo prebuild
+npx expo login
+npx expo configure
+```
+
+---
+
+## 🗂️ Create `eas.json` (Root folder)
+
+```json
+{
+  "cli": {
+    "version": ">= 16.28.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "env": { "NODE_ENV": "development" },
+      "node": "22.20.0"
+    },
+    "preview": {
+      "distribution": "internal",
+      "env": { "NODE_ENV": "preview" },
+      "node": "22.20.0"
+    },
+    "production": {
+      "autoIncrement": true,
+      "android": { "buildType": "apk" },
+      "env": { "NODE_ENV": "production" },
+      "node": "22.20.0"
+    }
+  },
+  "submit": { "production": {} }
+}
+```
+
+---
+
+## 📱 Build Android APK (Cloud)
+
+```bash
+npx expo prebuild
+npx eas build -p android --profile production
+```
+
+---
+
+## 📦 Local Android Bundle (Embed Export)
+
+```bash
+npx expo export:embed --eager --platform android --dev false
+```
+
+---
+
+## 🧹 Clear Cache if Error Occurs
+
+```bash
+npx expo start -c
+```

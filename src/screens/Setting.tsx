@@ -1,17 +1,43 @@
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import ConfirmModal from "@src/components/common/ConfirmModal";
 import { Image } from "expo-image";
 import { router } from "expo-router";
+import { useState } from "react"; // Import useState
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
+import { useLogoutMutation } from "../services/api";
 import { RootState } from "../store/store";
 
 export default function Settings() {
   const { user } = useSelector((state: RootState) => state.auth);
-  const logout = () => {
-    AsyncStorage.clear();
-    AsyncStorage.setItem("onBoarding", "true");
-    router.replace("/");
+  const [modalVisible, setModalVisible] = useState(false); // Modal state
+  const [logout, { isLoading }] = useLogoutMutation();
+
+  const logoutUser = async () => {
+    try {
+      await AsyncStorage.multiRemove([
+        "userId",
+        "access_token",
+        "refresh_token",
+      ]);
+
+      await logout();
+      router.replace("/");
+    } catch (e) {
+      console.log("Logout error", e);
+    }
+  };
+
+  // Function to handle logout button press
+  const handleLogoutPress = () => {
+    setModalVisible(true);
+  };
+
+  // Function to handle modal confirm
+  const handleConfirmLogout = () => {
+    setModalVisible(false);
+    logoutUser();
   };
 
   return (
@@ -54,9 +80,21 @@ export default function Settings() {
       <SettingItem icon="shield-check-outline" label="Privacy & Policy" />
 
       {/* Logout */}
-      <TouchableOpacity onPress={() => logout()}>
+      <TouchableOpacity onPress={handleLogoutPress}>
         <Text style={styles.logout}>Log Out</Text>
       </TouchableOpacity>
+
+      {/* Confirm Modal */}
+      <ConfirmModal
+        visible={modalVisible}
+        title="Confirm Logout"
+        message="Are you sure you want to logout? You will need to login again to access your account."
+        confirmText="Logout"
+        cancelText="Cancel"
+        onConfirm={handleConfirmLogout}
+        onCancel={() => setModalVisible(false)}
+        loading={isLoading}
+      />
     </View>
   );
 }

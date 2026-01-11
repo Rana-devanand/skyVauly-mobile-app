@@ -20,7 +20,7 @@ interface AuthWrapperProps {
 const AuthWrapper = ({ children, title, subtitle }: AuthWrapperProps) => {
   return (
     <ImageBackground
-      source={require("@assets/base/commonBg.png")}
+      source={require("@assets/base/newAuth.png")}
       style={styles.background}
     >
       <KeyboardAvoidingView
@@ -55,7 +55,7 @@ const AuthWrapper = ({ children, title, subtitle }: AuthWrapperProps) => {
 export default AuthWrapper;
 
 const styles = StyleSheet.create({
-  background: { flexGrow: 1 },
+  background: { flexGrow: 1},
   scrollViewContent: {
     justifyContent: "center",
     minHeight: "100%",

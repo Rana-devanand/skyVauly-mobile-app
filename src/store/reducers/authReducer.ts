@@ -15,7 +15,7 @@ interface AuthState {
 const initialState: AuthState = {
   accessToken: "",
   refreshToken: "",
-  isAuthenticated: Boolean(AsyncStorage.getItem("access_token")),
+  isAuthenticated: false,
   loading: true,
   user: {} as User,
 };
@@ -34,7 +34,6 @@ const _setTokens = (
 };
 
 const _setUser = (state: AuthState, user: User) => {
-  AsyncStorage.setItem("user", JSON.stringify(user));
   state.user = user;
   return state;
 };
@@ -46,6 +45,7 @@ const _resetTokens = (state: AuthState) => {
   state.refreshToken = "";
   state.isAuthenticated = false;
   state.loading = false;
+  state.user = {} as User;
   return state;
 };
 
@@ -116,6 +116,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setLoading, setTokens, resetTokens } = authSlice.actions;
+export const { setLoading, setTokens, resetTokens, setUser } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,11 +1,6 @@
 import React from "react";
-import {
-  Platform,
-  SafeAreaView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Platform, StatusBar, StyleSheet, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 type Props = {
   children: React.ReactNode;
@@ -13,9 +8,9 @@ type Props = {
 
 export default function SafeAreaWrapper({ children }: Props) {
   return (
-    <SafeAreaView style={styles.safe}>
+    <SafeAreaProvider style={styles.safe}>
       <View style={styles.container}>{children}</View>
-    </SafeAreaView>
+    </SafeAreaProvider>
   );
 }
 
@@ -27,6 +22,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingHorizontal: 20,
+    paddingHorizontal: 6,
+    paddingVertical: 6,
   },
 });

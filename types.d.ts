@@ -8,7 +8,8 @@ declare module "*.svg" {
 type ProviderType = "google" | "manual" | "facebook" | "apple" | "linkedin";
 
 interface User {
-  _id: string;
+  _id?: string;
+  id?: string;
   uid?: string;
   name: string;
   username: string;
