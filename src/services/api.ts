@@ -17,10 +17,10 @@ export const api = createApi({
           if (data?.data) {
             dispatch(setUser(data.data));
             if (data.data.id) {
-               await AsyncStorage.setItem("userId", String(data.data.id));
+              await AsyncStorage.setItem("userId", String(data.data.id));
             }
           } else {
-             console.warn("User data missing in ME response");
+            console.warn("User data missing in ME response");
           }
         } catch (e) {
           console.error("ME QUERY FAILED", e);
@@ -38,7 +38,18 @@ export const api = createApi({
     }),
     register: builder.mutation<
       ApiResponse<User>,
-      Omit<User, "_id" | "active" | "provider" | "blocked" | "blockReason" | "createdAt" | "facebookId" | "linkedinId" | "image"> & {
+      Omit<
+        User,
+        | "_id"
+        | "active"
+        | "provider"
+        | "blocked"
+        | "blockReason"
+        | "createdAt"
+        | "facebookId"
+        | "linkedinId"
+        | "image"
+      > & {
         password: string;
       }
     >({
@@ -56,9 +67,33 @@ export const api = createApi({
         return { url: `/users/invite`, method: "POST", body };
       },
     }),
-    updateUser: builder.mutation<ApiResponse<User>, User>({
+    updateUser: builder.mutation<
+      ApiResponse<User>,
+      Partial<User> & { id: string }
+    >({
+      query: ({ id, ...body }) => {
+        return { url: `/users/${id}`, method: "PUT", body };
+      },
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data?.data) {
+            dispatch(setUser(data.data));
+          }
+        } catch (e) {
+          console.error("Update User Sync Failed", e);
+        }
+      },
+      invalidatesTags: ["ME"],
+    }),
+    uploadProfile: builder.mutation<ApiResponse<void>, UpdateProfileImageDto>({
       query: (body) => {
-        return { url: `/users/${body._id}`, method: "PUT", body };
+        console.log({ body });
+        return {
+          url: "/users/upload-profile",
+          method: "PATCH",
+          body,
+        };
       },
     }),
     logout: builder.mutation<void, void>({
@@ -98,7 +133,7 @@ export const api = createApi({
         return { url: `/users/social/facebook`, method: "POST", body };
       },
     }),
-    getById : builder.query<ApiResponse<{user : User}>, string>({
+    getById: builder.query<ApiResponse<{ user: User }>, string>({
       query: (id) => {
         return { url: `/users/${id}`, method: "GET" };
       },
@@ -158,6 +193,7 @@ export const {
   useRegisterMutation,
   useInviteUserMutation,
   useUpdateUserMutation,
+  useUploadProfileMutation,
   useLoginByAppleMutation,
   useLoginByFacebookMutation,
   useLoginByGoogleMutation,

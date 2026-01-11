@@ -19,6 +19,7 @@ import { showMessage } from "react-native-flash-message";
 import * as yup from "yup";
 import CustomInput from "../common/CustomInput";
 import AuthWrapper from "./AuthWrapper";
+import Toast from "react-native-toast-message/lib";
 
 type FormData = yup.InferType<typeof createAccount>;
 
@@ -54,17 +55,17 @@ export default function Signup() {
         role: "USER",
         password: data.password,
       }).unwrap();
-      showMessage({
-        message: "Registration successful!",
+      Toast.show({
         type: "success",
+        text1: "Registration successful!",
       });
       // Navigate to login or home, or let user know
       router.push("/login");
     } catch (err: any) {
       console.log("Registration error:", err);
-      showMessage({
-        message: err?.data?.message || "Registration failed",
-        type: "danger",
+      Toast.show({
+        type: "error",
+        text1: err?.data?.message || "Registration failed",
       });
     }
   };

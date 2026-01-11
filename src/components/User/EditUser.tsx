@@ -12,10 +12,13 @@ import {
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
+import ImageUploadModal from "./ImageUploadModal";
+import { useUpdateUserMutation } from "@src/services/api";
 
 export default function EditProfile() {
   const router = useRouter();
 
+  const [updateUser] = useUpdateUserMutation();
   const { user } = useSelector((state: RootState) => state.auth);
 
   const [name, setName] = useState(user.name);
@@ -23,11 +26,35 @@ export default function EditProfile() {
   const [used] = useState(3.31);
   const limit = 6;
 
-  const onSave = () => {
+  const [profileImageUri, setProfileImageUri] = useState(
+    user.image || "https://i.pravatar.cc/150?img=12" // Use user's avatar or a default
+  );
+  const [isImageModalVisible, setImageModalVisible] = useState(false);
+
+  const onSave = async () => {
     if (!name.trim()) return Alert.alert("Name required");
     if (!email.includes("@")) return Alert.alert("Invalid email");
 
-    Alert.alert("Profile Updated");
+    try {
+      const userId = user.id || user._id; // Cover both id and _id
+      if (!userId) {
+        throw new Error("User ID is missing");
+      }
+
+      await updateUser({
+        id: userId,
+        name: name,
+        email: email,
+      }).unwrap();
+
+      Alert.alert("Success", "Profile Updated");
+    } catch (e: any) {
+      console.error("Update Error:", e);
+      Alert.alert(
+        "Update Error",
+        e?.data?.message || "Failed to update profile."
+      );
+    }
   };
 
   const onDelete = () => {
@@ -35,6 +62,30 @@ export default function EditProfile() {
       { text: "Cancel", style: "cancel" },
       { text: "Delete", style: "destructive" },
     ]);
+  };
+
+  const handleImageSelected = async (url: string) => {
+    try {
+      const userId = user.id || user._id;
+      if (!userId) {
+        throw new Error("User ID is missing");
+      }
+      const payload = {
+        id: userId,
+        email: email,
+        name: name,
+        image: url,
+      };
+      const res = await updateUser(payload).unwrap();
+      if (res?.data?.image) {
+        setProfileImageUri(res.data.image);
+      }
+    } catch (e: any) {
+      Alert.alert(
+        "Upload Error",
+        e?.data?.message || "Failed to upload profile image."
+      );
+    }
   };
 
   return (
@@ -48,9 +99,16 @@ export default function EditProfile() {
       {/* Avatar */}
       <View style={styles.avatarWrap}>
         <Image
-          source={{ uri: "https://i.pravatar.cc/150?img=32" }}
+          source={{ uri: user.image || "https://i.pravatar.cc/100?img=32" }}
           style={styles.avatar}
         />
+        {/* Edit Button */}
+        <TouchableOpacity
+          style={styles.editAvatarButton}
+          onPress={() => setImageModalVisible(true)}
+        >
+          <Feather name="camera" size={16} color="#fff" /> {/* or 'camera' */}
+        </TouchableOpacity>
       </View>
 
       {/* Full Name */}
@@ -99,6 +157,13 @@ export default function EditProfile() {
       <TouchableOpacity onPress={onDelete}>
         <Text style={styles.delete}>Delete Account</Text>
       </TouchableOpacity>
+
+      {/* Image Upload Modal */}
+      <ImageUploadModal
+        isVisible={isImageModalVisible}
+        onClose={() => setImageModalVisible(false)}
+        onUpload={handleImageSelected}
+      />
     </View>
   );
 }
@@ -124,11 +189,29 @@ const styles = StyleSheet.create({
   avatarWrap: {
     alignItems: "center",
     marginBottom: 24,
+    position: "relative", // Needed for absolute positioning of edit button
   },
   avatar: {
     width: 90,
     height: 90,
     borderRadius: 45,
+    borderWidth: 2, // Optional: add a subtle border
+    borderColor: "#eee",
+  },
+  editAvatarButton: {
+    position: "absolute",
+    bottom: 0,
+    right: "35%", // Adjust as needed to center it on the avatar's bottom right
+    backgroundColor: "#6A5AE0",
+    borderRadius: 20,
+    padding: 8,
+    // Shadow for iOS
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    // Elevation for Android
+    elevation: 5,
   },
   label: {
     fontSize: 12,
@@ -140,11 +223,15 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 12,
     marginBottom: 14,
+    fontSize: 16, // Ensure consistent text input size
+    color: "#333",
   },
   section: {
     fontWeight: "700",
     marginTop: 10,
     marginBottom: 8,
+    fontSize: 18, // Make section headers slightly larger
+    color: "#333",
   },
   rowBetween: {
     flexDirection: "row",
@@ -180,6 +267,7 @@ const styles = StyleSheet.create({
   },
   value: {
     fontWeight: "600",
+    color: "#333",
   },
   muted: {
     color: "#999",
@@ -195,11 +283,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#fff",
     fontWeight: "600",
+    fontSize: 16,
   },
   delete: {
     textAlign: "center",
     color: "#FF5C5C",
     marginTop: 26,
     fontWeight: "600",
+    fontSize: 16,
   },
 });

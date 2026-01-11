@@ -5,12 +5,7 @@ import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
 
-const AUTH_ROUTES = [
-  "login",
-  "signup",
-  "createAccount",
-  "onboardingProcess",
-];
+const AUTH_ROUTES = ["login", "createAccount", "onboardingProcess"];
 
 const RootNavigation = () => {
   const dispatch = useAppDispatch();
@@ -94,8 +89,6 @@ const RootNavigation = () => {
         name="createAccount"
         options={{ headerShown: false, headerTitle: "Create Account" }}
       />
-      <Stack.Screen name="signup" options={{ headerShown: false }} />
-      {/* <Stack.Screen name="forgot-password" options={{ headerShown: false }} /> */}
       <Stack.Screen name="onboardingProcess" options={{ headerShown: false }} />
     </Stack>
   );

@@ -14,8 +14,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { showMessage } from "react-native-flash-message";
 import { Divider } from "react-native-paper";
+import Toast from "react-native-toast-message/lib";
 import * as yup from "yup";
 import CustomInput from "../common/CustomInput";
 import AuthWrapper from "./AuthWrapper";
@@ -54,19 +54,17 @@ export default function Login() {
     try {
       await loginUser(data).unwrap();
       router.replace("/(authenticated)/(tabs)");
-      showMessage({
-        message: "Login successful",
+      Toast.show({
         type: "success",
+        text1: "Login successful",
       });
     } catch (error: any) {
-      showMessage({
-        message: error?.data?.message || "Login failed",
-        type: "danger",
+      Toast.show({
+        type: "error",
+        text1: error?.data?.message || "Login failed",
       });
     }
   };
-
-  console.log("Form state:", { isValid, isSubmitting, errors });
   return (
     <AuthWrapper>
       <View style={styles.container}>

@@ -30,3 +30,7 @@ interface ApiResponse<T> {
   message: string;
   sucess: boolean;
 }
+
+interface UpdateProfileImageDto {
+  image: string;
+}

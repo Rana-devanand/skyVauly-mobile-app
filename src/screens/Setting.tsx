@@ -13,7 +13,7 @@ export default function Settings() {
   const { user } = useSelector((state: RootState) => state.auth);
   const [modalVisible, setModalVisible] = useState(false); // Modal state
   const [logout, { isLoading }] = useLogoutMutation();
-
+  console.log({user})
   const logoutUser = async () => {
     try {
       await AsyncStorage.multiRemove([
@@ -53,7 +53,8 @@ export default function Settings() {
       {/* Profile */}
       <View style={styles.profileRow}>
         <Image
-          source={{ uri: "https://i.pravatar.cc/100?img=32" }}
+          // source={{ uri: "https://i.pravatar.cc/100?img=32" }}
+          source={{uri: user.image || "https://i.pravatar.cc/100?img=32"}}
           style={styles.avatar}
         />
         <View style={{ flex: 1 }}>

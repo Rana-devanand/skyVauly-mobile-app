@@ -3,7 +3,6 @@ import RootNavigation from "@src/navigation/RootNavigation";
 import SplashScreen from "@src/screens/Splash";
 import { useMeQuery } from "@src/services/api";
 import { setTokens } from "@src/store/reducers/authReducer";
-import { router } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
@@ -18,7 +17,7 @@ function AppContent() {
     "🔒 Securing your files...",
     "📂 Organizing documents...",
     "✨ Almost ready...",
-    "🚀 Launching SkyVault..."
+    "🚀 Launching SkyVault...",
   ];
 
   // 🔹 1. Rehydrate Auth State on Mount
@@ -42,12 +41,17 @@ function AppContent() {
   }, [dispatch]);
 
   // 🔹 2. Fetch User Profile
-  const { data, isLoading: isUserLoading , isError } = useMeQuery(undefined, {
+  const {
+    data,
+    isLoading: isUserLoading,
+    isError,
+  } = useMeQuery(undefined, {
     skip: !isReady,
   });
 
   // 🔹 3. Cycle loading messages
   useEffect(() => {
+    // AsyncStorage.clear();
     const interval = setInterval(() => {
       setLoadingMessageIndex((prev) => (prev + 1) % messages.length);
     }, 3000);
@@ -57,8 +61,6 @@ function AppContent() {
 
   // 🔹 4. Show splash until both ready
   const isLoading = !isReady || isUserLoading;
-
-  console.log({isLoading})
   if (isLoading) {
     return <SplashScreen loadingMessage={messages[loadingMessageIndex]} />;
   }
